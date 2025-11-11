@@ -380,3 +380,38 @@ smartspend/
 ├── README.md                    # Project overview and setup steps
 └── .gitignore                   # Files ignored by Git
 
+
+🧱 Structure Breakdown
+🔹 1. frontend (UI Layer)
+
+Handled mostly by Member A but shared with B for data binding.
+
+Folders:
+
+pages/ → Complete app screens (Home, Login, Dashboard)
+
+widgets/ → Reusable UI pieces (buttons, cards, expense tiles)
+
+config/ → Routes and themes
+
+models/ → Defines the structure of app data
+
+Example Frontend Flow:
+main.dart → app_routes.dart → home_page.dart → login_page.dart → dashboard_page.dart
+
+🔹 2. backend (Logic & Data Layer)
+
+Handled mostly by Member B, but Member A will also call these services from the UI.
+
+Folders:
+
+services/ → All backend logic and Firebase integration
+
+auth_service.dart — Handles sign-in, sign-out, and current user info
+
+database_service.dart — Handles CRUD for Firestore (addExpense, getExpenses, etc.)
+
+firebase_options.dart — Auto-generated config file from Firebase CLI
+
+controllers/ → Optional layer to manage state (if using Provider, Riverpod, etc.)
+
