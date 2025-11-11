@@ -321,3 +321,62 @@ Add category filter or date filter
 Add chart visualization (using fl_chart package)
 
 Deploy to Firebase Hosting
+
+
+
+
+
+FILE STRUCTURE 
+
+smartspend/
+├── android/                     # Default Flutter Android folder (for web, mostly unused)
+├── ios/                         # Default Flutter iOS folder (for web, mostly unused)
+├── web/                         # Web entry files
+│   ├── index.html               # Firebase SDK config goes here
+│   ├── favicon.png
+│   └── manifest.json
+├── assets/                      # Static assets like icons, logos, and images
+│   ├── icons/
+│   │   └── app_logo.png
+│   └── illustrations/
+│       └── welcome_banner.png
+├── lib/                         # MAIN SOURCE CODE (Frontend + Backend services)
+│   ├── main.dart                # App entry point
+│   │
+│   ├── config/                  # App-wide settings, routes, and themes
+│   │   ├── app_routes.dart      # Route names & navigation setup
+│   │   └── app_theme.dart       # ThemeData, colors, fonts, etc.
+│   │
+│   ├── models/                  # Data Models (structure of your objects)
+│   │   └── expense_model.dart   # Defines Expense fields: title, amount, category, date
+│   │
+│   ├── services/                # "Backend logic" layer (Firebase interaction)
+│   │   ├── auth_service.dart    # Handles login/logout with Firebase Auth
+│   │   ├── database_service.dart# Handles CRUD operations with Firestore
+│   │   ├── firebase_options.dart# Auto-generated Firebase config file
+│   │   └── helpers.dart         # Optional: shared helper functions or formatters
+│   │
+│   ├── pages/                   # Frontend Pages (UI)
+│   │   ├── home_page.dart       # Landing/welcome screen
+│   │   ├── login_page.dart      # Login form & logic
+│   │   ├── dashboard_page.dart  # Main user dashboard (expense list + summary)
+│   │   ├── add_expense_page.dart# Separate add-expense form (or dialog)
+│   │   └── not_found_page.dart  # 404 fallback for unknown routes
+│   │
+│   ├── widgets/                 # Reusable frontend UI components
+│   │   ├── expense_tile.dart    # Widget for displaying each expense item
+│   │   ├── summary_card.dart    # Widget for showing total/monthly summary
+│   │   └── custom_button.dart   # Reusable styled button
+│   │
+│   └── controllers/             # State management layer (optional, scalable)
+│       ├── auth_controller.dart # Manages login state
+│       └── expense_controller.dart # Manages expense list, filters, etc.
+│
+├── test/                        # Flutter test files (optional for later)
+│   └── widget_test.dart
+│
+├── pubspec.yaml                 # Dependencies and assets registration
+├── analysis_options.yaml        # Linting and style rules
+├── README.md                    # Project overview and setup steps
+└── .gitignore                   # Files ignored by Git
+
