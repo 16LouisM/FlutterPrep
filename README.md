@@ -359,6 +359,7 @@ smartspend/
 │   ├── pages/                   # Frontend Pages (UI)
 │   │   ├── home_page.dart       # Landing/welcome screen
 │   │   ├── login_page.dart      # Login form & logic
+|   |   ├── signup_page.dart     # SignUp form
 │   │   ├── dashboard_page.dart  # Main user dashboard (expense list + summary)
 │   │   ├── add_expense_page.dart# Separate add-expense form (or dialog)
 │   │   └── not_found_page.dart  # 404 fallback for unknown routes
