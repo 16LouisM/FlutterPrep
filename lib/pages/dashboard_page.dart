@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_prep/widgets/summary_card.dart';
 import 'package:flutter_prep/services/auth_service.dart';
+import 'package:flutter_prep/pages/add_expense_page.dart';
 
 class DashboardPage extends StatefulWidget {
   static const routeName = '/dashboard';
@@ -133,21 +134,10 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder:
-                (context) => AlertDialog(
-                  title: const Text('Add Expense'),
-                  content: const Text(
-                    'Add expense dialog is not available; use this placeholder.',
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
+          // Navigate to AddExpensePage
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddExpensePage()),
           );
         },
         backgroundColor: Colors.blue.shade600,
