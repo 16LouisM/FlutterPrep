@@ -43,53 +43,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
     }
   }
 
-//   void _saveExpense() async {
-//   if (_formKey.currentState!.validate()) {
-//     try {
-//       final user = FirebaseAuth.instance.currentUser;
-
-//       if (user == null) {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(
-//             content: Text('You must be logged in to save an expense.'),
-//             backgroundColor: Colors.red,
-//           ),
-//         );
-//         return;
-//       }
-
-//       final expenseData = {
-//         'title': _titleController.text.trim(),
-//         'amount': double.parse(_amountController.text.trim()),
-//         'category': _selectedCategory,
-//         'date': Timestamp.fromDate(_selectedDate),
-//         'createdAt': Timestamp.now(),
-//       };
-
-//       await FirebaseFirestore.instance
-//           .collection('users')
-//           .doc(user.uid)
-//           .collection('expenses')
-//           .add(expenseData);
-
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text('Expense saved successfully!'),
-//           backgroundColor: Colors.green,
-//         ),
-//       );
-
-//       Navigator.pop(context);
-//     } catch (e) {
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(
-//           content: Text('Failed to save expense: $e'),
-//           backgroundColor: Colors.red,
-//         ),
-//       );
-//     }
-//   }
-// }
 void _saveExpense() async {
   if (_formKey.currentState!.validate()) {
     try {
