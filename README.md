@@ -1,80 +1,95 @@
-💰 Expense Tracker Web App (Alpha Version)
+# 💰 Expense Tracker Web App (Alpha Version)
 
-A simple Flutter Web application that helps users track and visualize their daily expenses.
-Built as a collaborative project using Firebase for authentication and data storage.
-This version is an alpha release — functional but still under refinement.
+A simple **Flutter Web application** that helps users **track and visualize their daily expenses**.  
+This project uses **Firebase** for authentication and data storage.  
+It is currently in its **Alpha stage**, meaning core features are implemented but refinements and UI improvements are still ongoing.
 
-🚀 Overview
+---
+
+## 🚀 Overview
 
 The Expense Tracker Web App allows users to:
 
-Create an account or sign in using Firebase Authentication.
+- Create an account and log in securely using **Firebase Authentication**.
+- Add, view, and manage expenses in real time using **Cloud Firestore**.
+- View a **dashboard** that summarizes all recorded expenses.
+- Access and sync data across devices securely via the cloud.
 
-Add, view, and manage expenses in real time using Firebase Firestore.
+This alpha version focuses on core functionality — authentication, CRUD operations, and a basic dashboard view.
 
-View a dashboard summarizing total spending.
+---
 
-Access data across devices via secure cloud storage.
+## 🧠 Key Features (Alpha)
 
-This alpha version establishes a full-stack foundation with real-time backend connections and a basic, responsive frontend. Future versions will focus on UI improvements, analytics, and advanced features.
+| Feature | Description |
+|----------|--------------|
+| 🔐 **User Authentication** | Register, log in, and log out via Firebase Auth. |
+| 💵 **Expense Management** | Add, edit, and delete expenses (title, amount, category, date). |
+| 📊 **Dashboard Overview** | View all expenses in real time. |
+| ☁️ **Firestore Integration** | Persistent cloud-based storage for user data. |
+| 🔄 **Real-Time Updates** | Auto-refresh expense list via Firestore streams. |
+| 💻 **Flutter Web UI** | Responsive design that works directly in a web browser. |
 
-🧠 Key Features (Alpha)
+---
 
-| Feature                   | Description                                                   |
-| ------------------------- | ------------------------------------------------------------- |
-| **User Authentication**   | Firebase-powered sign up, sign in, and sign out.              |
-| **Expense Management**    | Add and list expenses with title, amount, category, and date. |
-| **Dashboard Overview**    | Displays all expenses in real time with total spent.          |
-| **Firestore Integration** | Persistent cloud-based storage for all user data.             |
-| **Real-Time Updates**     | Uses Firestore streams to auto-refresh dashboard data.        |
-| **Responsive Web UI**     | Runs seamlessly in the browser with Flutter Web.              |
+## 🧩 Tech Stack
 
-🧩 Tech Stack
+| Layer | Technology |
+|--------|-------------|
+| **Frontend** | Flutter Web |
+| **Backend** | Firebase Authentication + Cloud Firestore |
+| **Language** | Dart |
+| **IDE** | Visual Studio Code |
+| **Version Control** | Git & GitHub |
+| **State Management** | Provider |
 
-| Area                 | Technology                      |
-| -------------------- | ------------------------------- |
-| **Frontend**         | Flutter (Web)                   |
-| **Backend**          | Firebase (Auth, Firestore)      |
-| **Language**         | Dart                            |
-| **IDE**              | Visual Studio Code              |
-| **Version Control**  | Git + GitHub                    |
-| **State Management** | Provider (basic implementation) |
+---
 
-🧱 Project Structure
+## 🧱 Project Structure
 
 lib/
 │
-├── main.dart                      # App entry point + Firebase initialization
-│
-├── firebase_options.dart           # Auto-generated Firebase configuration
+├── main.dart # App entry point & Firebase initialization
+├── firebase_options.dart # Auto-generated Firebase config
 │
 ├── models/
-│   └── expense_model.dart          # Expense data model
+│ └── expense_model.dart # Data model for expenses
 │
 ├── services/
-│   ├── auth_service.dart           # Handles Firebase authentication logic
-│   └── database_service.dart       # Handles Firestore CRUD operations
+│ ├── auth_service.dart # Firebase authentication logic
+│ └── database_service.dart # Firestore CRUD operations
 │
 ├── pages/
-│   ├── login_page.dart             # Login and sign-up screen
-│   ├── dashboard_page.dart         # Expense dashboard
-│   └── add_expense_page.dart       # Add new expense form
+│ ├── login_page.dart # User login screen
+│ ├── signup_page.dart # User registration screen
+│ ├── dashboard_page.dart # Dashboard showing all expenses
+│ ├── add_expense_page.dart # Form for adding a new expense
+│ └── home_page.dart # Landing page
 │
 └── widgets/
-    └── expense_tile.dart           # UI component to display each expense
+└── expense_tile.dart # Widget to display expense items
 
-🧑‍💻 Team & Task Assignments
 
-| Member       | Responsibilities                                                                                   |
-| ------------ | -------------------------------------------------------------------------------------------------- |
-| **Member A** | UI/UX design, page navigation, frontend layouts, visual polish, and user interactions.             |
-| **Member B** | Firebase integration, authentication, database CRUD operations, and frontend–backend data linking. |
+---
 
-Both members collaborated on testing, debugging, and version control using GitHub.
+## 👥 Team Roles
 
-⚙️ Setup Instructions
-1️⃣ Clone the Repository
+| Member | Role | Responsibilities |
+|---------|------|------------------|
+| **Member A** | Frontend Focus | UI/UX design, page layouts, navigation, form validation, dashboard display |
+| **Member B** | Backend Integration | Firebase setup, authentication, database CRUD, linking UI to backend |
 
+Both members share responsibilities in:
+- Testing and debugging  
+- Git & GitHub collaboration  
+- Feature refinement for the beta release  
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone the Repository
+```bash
 git clone https://github.com/<your-repo>/expense_tracker_alpha.git
 cd expense_tracker_alpha
 
@@ -84,74 +99,79 @@ flutter pub get
 
 3️⃣ Configure Firebase
 
-Run the FlutterFire CLI to link your Firebase project:
+Run the FlutterFire CLI to connect your Firebase project:
+
+3️⃣ Configure Firebase
+
+Run the FlutterFire CLI to connect your Firebase project:
 
 dart pub global activate flutterfire_cli
 flutterfire configure
 
-This will generate:
+This command will generate:
 
 lib/firebase_options.dart
 
-4️⃣ Run the App (Web)
+4️⃣ Run the App on Web
 
 flutter run -d chrome
 
-📦 Firebase Configuration
+🔧 Firebase Setup
 
-Make sure you’ve enabled the following in your Firebase Console:
+Ensure the following are enabled in your Firebase Console:
 
-Authentication → Email/Password Sign-in
+Authentication → Email/Password Sign-In
 
 Cloud Firestore → Start in test mode (for alpha)
 
-Hosting (optional) if deploying the web app
+(Optional) Hosting if you plan to deploy the app publicly.
 
 🧮 Data Model
 
-Collection: expenses
-Document fields:
+Collection: users/{uid}/expenses
+
+Example Document:
 
 {
-  "title": "Lunch",
-  "amount": 12.50,
+  "title": "Groceries",
+  "amount": 120.50,
   "category": "Food",
   "date": "2025-11-13T10:00:00Z",
-  "userId": "firebaseUserUid"
+  "createdAt": "2025-11-13T10:01:00Z"
 }
 
 🧠 Known Limitations (Alpha)
 
-This is an early-stage release focused on functionality over polish.
-Current limitations include:
+This alpha version prioritizes functionality.
+Some features and polish are intentionally deferred:
 
-Minimal UI styling (default Flutter components).
+Limited UI styling and animations.
 
-No data filtering or category breakdowns yet.
+No charts, filters, or analytics yet.
 
-Limited error handling and form validation.
+Minimal validation and error handling.
 
-No analytics or charts.
+No user profile or settings page.
 
-No profile page or settings.
+Firestore security rules not fully hardened.
 
-These issues will be addressed in the Beta release.
+These will be addressed in the upcoming Beta release.
 
 🔮 Planned Enhancements
 
-📊 Category filtering and chart visualization (Pie/Bar charts).
+📊 Expense charts (Pie/Bar visualization by category)
 
-📆 Monthly summary reports.
+📆 Monthly summaries and reports
 
-👤 User profile and settings page.
+👤 User profile page
 
-🌗 Light/Dark theme toggle.
+🌗 Light/Dark mode toggle
 
-🔒 Firestore security rules refinement.
+💾 Data export (CSV/JSON)
 
-💾 Data export (CSV/JSON).
+🔐 Secure Firestore rules
 
-🧠 AI-based spending insights (future exploration).
+🧠 Smart budget suggestions (future feature)
 
 🌐 Deployment (Optional)
 
@@ -160,15 +180,17 @@ To deploy on Firebase Hosting:
 flutter build web
 firebase deploy --only hosting
 
-🤝 Collaboration Guidelines
+🤝 Contribution Workflow
 
-Use GitHub branches for feature development.
+1. Branching: Create feature branches
 
-Follow pull request reviews before merging to main.
+git checkout -b feature/<feature-name>
 
-Maintain clear commit messages (e.g., feat: add dashboard charts).
+2. Commiting: Use clear, descriptive commit messages
 
-Keep code modular and readable using OOP principles.
+git commit -m "feat: add user signup functionality"
+
+3. Pull Requests: Submit PRs for review before merging into main.
 
 📄 License
 
@@ -177,6 +199,19 @@ You may reuse or adapt the code with attribution.
 
 🧭 Project Status
 
-Stage: Alpha
+Version: Alpha 0.1
+
 Goal: Functional prototype for testing and refinement
-Next Milestone: Beta version with UI improvements and analytics
+
+Next Milestone: Beta release with charts, filters, and visual improvements
+
+✨ Authors
+
+Member A – UI/UX, Frontend Development
+
+Member B – Firebase Integration, Backend Development
+
+This project represents the Alpha stage of the Expense Tracker App — a foundational prototype designed to evolve into a fully featured personal finance tool.
+
+
+---
