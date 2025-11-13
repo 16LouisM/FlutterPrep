@@ -17,7 +17,7 @@
 //     - Call AuthService().signInWithEmail(email, password).
 //     - Show an error message if it throws an Exception.
 //
-//  3. SIGN-UP PAGE 
+//  3. SIGN-UP PAGE
 //     - Call AuthService().signUpWithEmail(email, password).
 //     - On success, you can redirect the user to the dashboard or login page.
 //
@@ -65,6 +65,15 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleFirebaseError(e));
     }
+  }
+
+  Future<String?> signIn(String email, String password) async {
+    // Simulate an authentication call; return null on success or an error message on failure.
+    await Future.delayed(const Duration(seconds: 1));
+    if (email == 'user@example.com' && password == 'password') {
+      return null; // success
+    }
+    return 'Invalid email or password';
   }
 
   //  SIGN UP (Register new users)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_prep/pages/login_page.dart';
+import 'login_page.dart'; // Import the pages directly
+import 'sign_up_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -47,47 +48,45 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
 
-                // Get Started Button
+                // Buttons
                 const SizedBox(height: 48),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue.shade600,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 16,
+                SizedBox(
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Direct navigation to LoginPage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade600,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
-                    textStyle: const TextStyle(fontSize: 18),
+                    child: const Text('Login'),
                   ),
-                  child: const Text('Get Started'),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: 200,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      // Direct navigation to SignUpPage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: const Text('Create Account'),
+                  ),
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-
-      // Footer
-      bottomNavigationBar: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          border: Border(
-            top: BorderSide(width: 1, color: Colors.grey.shade300),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            'SmartSpend Team © 2024',
-            style: TextStyle(color: Colors.grey.shade600),
           ),
         ),
       ),
