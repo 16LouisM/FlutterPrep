@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Center(
           child: Text(
-            'SmartSpend Team © 2024',
+            'SmartSpend Team © 2025',
             style: TextStyle(color: Colors.grey.shade600),
           ),
         ),

@@ -269,7 +269,7 @@
 //         ),
 //         child: Center(
 //           child: Text(
-//             'SmartSpend Team © 2024',
+//             'SmartSpend Team © 2025',
 //             style: TextStyle(color: Colors.grey.shade600),
 //           ),
 //         ),
@@ -676,7 +676,7 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
         child: Center(
           child: Text(
-            'SmartSpend Team © 2024',
+            'SmartSpend Team © 2025',
             style: TextStyle(color: Colors.grey.shade600),
           ),
         ),
