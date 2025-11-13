@@ -9,15 +9,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ✅ Initialize Firebase first
-  await Firebase.initializeApp(
-    options:
-        DefaultFirebaseOptions
-            .currentPlatform, // remove if not using firebase_options.dart
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     MultiProvider(
-      providers: [Provider<AuthService>(create: (_) => AuthService())],
+      providers: [
+        // ✅ Change this line to use ChangeNotifierProvider
+        ChangeNotifierProvider<AuthService>(create: (_) => AuthService()),
+      ],
       child: const MyApp(),
     ),
   );
