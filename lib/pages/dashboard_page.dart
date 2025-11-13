@@ -257,6 +257,24 @@ class _DashboardPageState extends State<DashboardPage> {
           ],
         ),
       ),
+
+      // Footer
+      bottomNavigationBar: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.blue.shade50,
+          border: Border(
+            top: BorderSide(width: 1, color: Colors.grey.shade300),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            'SmartSpend Team © 2024',
+            style: TextStyle(color: Colors.grey.shade600),
+          ),
+        ),
+      ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Navigate to AddExpensePage

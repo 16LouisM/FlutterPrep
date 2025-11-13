@@ -49,23 +49,28 @@ class _SignUpPageState extends State<SignUpPage> {
       // ✅ Show alert dialog after successful sign up
       await showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Success'),
-          content: const Text('Your account has been created successfully!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close dialog
-                // ✅ Navigate to login page
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
-              },
-              child: const Text('OK'),
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Success'),
+              content: const Text(
+                'Your account has been created successfully!',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close dialog
+                    // ✅ Navigate to login page
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } catch (e) {
       if (!mounted) return;
@@ -276,22 +281,23 @@ class _SignUpPageState extends State<SignUpPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child: _isLoading
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          Colors.white,
+                              child:
+                                  _isLoading
+                                      ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
                                         ),
+                                      )
+                                      : const Text(
+                                        'Create Account',
+                                        style: TextStyle(fontSize: 16),
                                       ),
-                                    )
-                                  : const Text(
-                                      'Create Account',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
                             ),
                           ),
 
@@ -343,6 +349,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+      // Footer
+      bottomNavigationBar: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.blue.shade50,
+          border: Border(
+            top: BorderSide(width: 1, color: Colors.grey.shade300),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            'SmartSpend Team © 2024',
+            style: TextStyle(color: Colors.grey.shade600),
           ),
         ),
       ),

@@ -67,9 +67,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: [
-          IconButton(icon: const Icon(Icons.save), onPressed: _saveExpense),
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -193,6 +190,23 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+
+      // Footer
+      bottomNavigationBar: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: Colors.blue.shade50,
+          border: Border(
+            top: BorderSide(width: 1, color: Colors.grey.shade300),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            'SmartSpend Team © 2024',
+            style: TextStyle(color: Colors.grey.shade600),
           ),
         ),
       ),
