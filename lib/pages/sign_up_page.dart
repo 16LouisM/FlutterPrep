@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
+import 'login_page.dart'; // ✅ Import the login page
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -43,9 +44,29 @@ class _SignUpPageState extends State<SignUpPage> {
         _passwordController.text,
       );
 
-      // Success - navigate to dashboard
       if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/dashboard');
+
+      // ✅ Show alert dialog after successful sign up
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Success'),
+          content: const Text('Your account has been created successfully!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close dialog
+                // ✅ Navigate to login page
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +110,6 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Sign Up Card
                 Card(
                   elevation: 8,
                   shape: RoundedRectangleBorder(
@@ -102,7 +122,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Title
                           Text(
                             'Create Account',
                             style: TextStyle(
@@ -257,23 +276,22 @@ class _SignUpPageState extends State<SignUpPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              child:
-                                  _isLoading
-                                      ? const SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                Colors.white,
-                                              ),
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
                                         ),
-                                      )
-                                      : const Text(
-                                        'Create Account',
-                                        style: TextStyle(fontSize: 16),
                                       ),
+                                    )
+                                  : const Text(
+                                      'Create Account',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
                             ),
                           ),
 

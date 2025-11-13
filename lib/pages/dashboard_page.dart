@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_prep/pages/login_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_prep/widgets/summary_card.dart';
 import 'package:flutter_prep/services/auth_service.dart';
@@ -13,6 +14,127 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  // ✅ Always initialize categories to prevent null reference errors
+  final List<String> _categories = [
+    'Food',
+    'Transport',
+    'Rent',
+    'Entertainment',
+    'Shopping',
+    'Healthcare',
+    'Education',
+    'Other',
+  ];
+
+  String? _selectedCategory; // currently selected filter category
+
+  Future<void> _logout(BuildContext context) async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signOut();
+
+      if (!mounted) return;
+
+      // ✅ Show logout confirmation dialog
+      await showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Logged Out'),
+              content: const Text('You have been logged out successfully.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // close dialog
+                    // ✅ Redirect to login page
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Logout failed: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // ✅ Open category filter dialog
+  void _openCategoryFilter() {
+    showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: const Text('Filter by Category'),
+            content: SizedBox(
+              width: double.maxFinite,
+              child:
+                  _categories.isEmpty
+                      ? const Center(child: Text('No categories available'))
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _categories.length,
+                        itemBuilder: (context, index) {
+                          final category = _categories[index];
+                          return RadioListTile<String>(
+                            title: Text(category),
+                            value: category,
+                            groupValue: _selectedCategory,
+                            activeColor: Colors.blue.shade600,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCategory = value;
+                              });
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Filtered by $value'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedCategory = null;
+                  });
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Filter cleared'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: const Text('Clear Filter'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
@@ -26,12 +148,8 @@ class _DashboardPageState extends State<DashboardPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Logout feature coming soon!')),
-              );
-            },
             tooltip: 'Logout',
+            onPressed: () => _logout(context),
           ),
         ],
       ),
@@ -55,7 +173,6 @@ class _DashboardPageState extends State<DashboardPage> {
             // Summary Cards
             Row(
               children: [
-                // Total Monthly Spending
                 Expanded(
                   child: SummaryCard(
                     icon: Icons.attach_money,
@@ -65,8 +182,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 const SizedBox(width: 12),
-
-                // Total Expenses
                 Expanded(
                   child: SummaryCard(
                     icon: Icons.receipt,
@@ -78,10 +193,8 @@ class _DashboardPageState extends State<DashboardPage> {
               ],
             ),
             const SizedBox(height: 12),
-
             Row(
               children: [
-                // Top Category
                 Expanded(
                   child: SummaryCard(
                     icon: Icons.category,
@@ -91,8 +204,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                 ),
                 const SizedBox(width: 12),
-
-                // Average Expense
                 Expanded(
                   child: SummaryCard(
                     icon: Icons.trending_up,
@@ -105,22 +216,36 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             const SizedBox(height: 24),
 
-            // Expenses Header
+            // Expenses Header + Filter
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Recent Expenses',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Row(
+                  children: [
+                    const Text(
+                      'Recent Expenses',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (_selectedCategory != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Chip(
+                          label: Text(_selectedCategory!),
+                          deleteIcon: const Icon(Icons.close, size: 16),
+                          onDeleted: () {
+                            setState(() {
+                              _selectedCategory = null;
+                            });
+                          },
+                        ),
+                      ),
+                  ],
                 ),
                 IconButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Filter feature coming soon!'),
-                      ),
-                    );
-                  },
+                  onPressed: _openCategoryFilter,
                   icon: const Icon(Icons.filter_list),
                 ),
               ],
@@ -148,7 +273,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildExpensesList() {
-    // Temporary empty state - will be populated by Member B
+    // Placeholder until actual expenses are implemented
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +281,9 @@ class _DashboardPageState extends State<DashboardPage> {
           Icon(Icons.receipt_long, size: 64, color: Colors.grey.shade400),
           const SizedBox(height: 16),
           Text(
-            'No expenses yet',
+            _selectedCategory == null
+                ? 'No expenses yet'
+                : 'No expenses in "${_selectedCategory!}"',
             style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 8),
