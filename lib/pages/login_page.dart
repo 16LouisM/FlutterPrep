@@ -171,18 +171,25 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 16),
 
                         // Sign Up Link - Direct navigation
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignUpPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Don't have an account? Create one",
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account? ",
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignUpPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Sign Up'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -195,18 +202,33 @@ class _LoginPageState extends State<LoginPage> {
       ),
       // Footer
       bottomNavigationBar: Container(
-        height: 60,
+        height: 115,
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          border: Border(
-            top: BorderSide(width: 1, color: Colors.grey.shade300),
-          ),
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            'SmartSpend Team © 2025',
-            style: TextStyle(color: Colors.grey.shade600),
-          ),
+        child: Column(
+          children: [
+            Text(
+              'SmartSpend - Your Personal Finance Manager',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue.shade700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Track your expenses • Manage your budget • Save smarter',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '© 2024 SmartSpend App. All rights reserved.',
+              style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
+            ),
+          ],
         ),
       ),
     );
