@@ -90,10 +90,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Error: $e"),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red),
       );
     }
   }
@@ -108,8 +105,8 @@ class _LoginPageState extends State<LoginPage> {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
       // Web popup login
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithPopup(googleProvider);
 
       if (userCredential.user != null && mounted) {
         Navigator.pushReplacement(
@@ -226,17 +223,19 @@ class _LoginPageState extends State<LoginPage> {
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            child: _isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor:
-                                          AlwaysStoppedAnimation(Colors.white),
-                                    ),
-                                  )
-                                : const Text("Login"),
+                            child:
+                                _isLoading
+                                    ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation(
+                                          Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                    : const Text("Login"),
                           ),
                         ),
 
@@ -251,42 +250,55 @@ class _LoginPageState extends State<LoginPage> {
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
                             ),
-                            child: _isGoogleLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor:
-                                          AlwaysStoppedAnimation(Colors.black),
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.network(
-                                        "https://upload.wikimedia.org/wikipedia/commons/4/4e/Google_2015_logo.svg",
-                                        height: 18,
+                            child:
+                                _isGoogleLoading
+                                    ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation(
+                                          Colors.black,
+                                        ),
                                       ),
-                                      const SizedBox(width: 10),
-                                      const Text("Sign in with Google"),
-                                    ],
-                                  ),
+                                    )
+                                    : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.network(
+                                          "https://upload.wikimedia.org/wikipedia/commons/4/4e/Google_2015_logo.svg",
+                                          height: 18,
+                                        ),
+                                        const SizedBox(width: 10),
+                                        const Text("Sign in with Google"),
+                                      ],
+                                    ),
                           ),
                         ),
 
                         const SizedBox(height: 16),
 
                         // SIGN UP LINK
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUpPage()),
-                            );
-                          },
-                          child: const Text("Don't have an account? Create one"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account? ",
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignUpPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Sign Up'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -303,8 +315,9 @@ class _LoginPageState extends State<LoginPage> {
         height: 115,
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
-          border:
-              Border(top: BorderSide(width: 1, color: Colors.grey.shade300)),
+          border: Border(
+            top: BorderSide(width: 1, color: Colors.grey.shade300),
+          ),
         ),
         child: Column(
           children: [
