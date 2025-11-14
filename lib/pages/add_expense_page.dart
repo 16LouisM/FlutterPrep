@@ -305,7 +305,6 @@
 // //   }
 // // }
 
-
 // import 'package:flutter/material.dart';
 // import 'package:flutter_prep/pages/login_page.dart';
 // import 'package:provider/provider.dart';
@@ -704,8 +703,6 @@
 //       );
 // }
 
-
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -715,11 +712,7 @@ class AddExpensePage extends StatefulWidget {
   final String? expenseId;
   final Map<String, dynamic>? existingData;
 
-  const AddExpensePage({
-    super.key,
-    this.expenseId,
-    this.existingData,
-  });
+  const AddExpensePage({super.key, this.expenseId, this.existingData});
 
   @override
   State<AddExpensePage> createState() => _AddExpensePageState();
@@ -786,8 +779,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
     };
 
     try {
-      final userDoc =
-          FirebaseFirestore.instance.collection('users').doc(user.uid);
+      final userDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid);
 
       if (widget.expenseId != null) {
         // ✅ Update existing expense
@@ -804,9 +798,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(widget.expenseId != null
-              ? 'Expense updated successfully!'
-              : 'Expense saved successfully!'),
+          content: Text(
+            widget.expenseId != null
+                ? 'Expense updated successfully!'
+                : 'Expense saved successfully!',
+          ),
           backgroundColor: Colors.green,
         ),
       );
@@ -849,10 +845,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   hintText: 'e.g., Groceries, Uber, Movie Tickets',
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    (value == null || value.isEmpty)
-                        ? 'Please enter a title'
-                        : null,
+                validator:
+                    (value) =>
+                        (value == null || value.isEmpty)
+                            ? 'Please enter a title'
+                            : null,
               ),
               const SizedBox(height: 20),
 
@@ -865,8 +862,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   prefixText: 'R ',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the amount spent';
@@ -887,24 +885,26 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   labelText: 'Category *',
                   border: OutlineInputBorder(),
                 ),
-                items: _categories.map((category) {
-                  return DropdownMenuItem(
-                    value: category,
-                    child: Row(
-                      children: [
-                        Icon(
-                          _getCategoryIcon(category),
-                          color: _getCategoryColor(category),
+                items:
+                    _categories.map((category) {
+                      return DropdownMenuItem(
+                        value: category,
+                        child: Row(
+                          children: [
+                            Icon(
+                              _getCategoryIcon(category),
+                              color: _getCategoryColor(category),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(category),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        Text(category),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() {
-                  _selectedCategory = value!;
-                }),
+                      );
+                    }).toList(),
+                onChanged:
+                    (value) => setState(() {
+                      _selectedCategory = value!;
+                    }),
               ),
               const SizedBox(height: 20),
 
@@ -920,8 +920,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        intl.DateFormat('EEEE, MMMM d, yyyy')
-                            .format(_selectedDate),
+                        intl.DateFormat(
+                          'EEEE, MMMM d, yyyy',
+                        ).format(_selectedDate),
                         style: const TextStyle(fontSize: 16),
                       ),
                       const Icon(Icons.calendar_today),
@@ -955,18 +956,33 @@ class _AddExpensePageState extends State<AddExpensePage> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 60,
+        height: 115,
         decoration: BoxDecoration(
-          color: Colors.blue.shade50,
-          border: Border(
-            top: BorderSide(width: 1, color: Colors.grey.shade300),
-          ),
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            'SmartSpend Team © 2025',
-            style: TextStyle(color: Colors.grey.shade600),
-          ),
+        child: Column(
+          children: [
+            Text(
+              'SmartSpend - Your Personal Finance Manager',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue.shade700,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Track your expenses • Manage your budget • Save smarter',
+              style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '© 2024 SmartSpend App. All rights reserved.',
+              style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
+            ),
+          ],
         ),
       ),
     );
