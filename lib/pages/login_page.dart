@@ -263,6 +263,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _isGoogleLoading ? null : _signInWithGoogle,
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 14),
+                              side: BorderSide(color: Colors.grey.shade400),
                             ),
                             child:
                                 _isGoogleLoading
@@ -280,12 +281,28 @@ class _LoginPageState extends State<LoginPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Image.network(
-                                          "https://upload.wikimedia.org/wikipedia/commons/4/4e/Google_2015_logo.svg",
-                                          height: 18,
+                                        Container(
+                                          padding: const EdgeInsets.all(2),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              50,
+                                            ),
+                                          ),
+                                          child: const Icon(
+                                            Icons.g_mobiledata,
+                                            size: 20,
+                                            color: Colors.red,
+                                          ),
                                         ),
-                                        const SizedBox(width: 10),
-                                        const Text("Sign in with Google"),
+                                        const SizedBox(width: 12),
+                                        const Text(
+                                          "Sign in with Google",
+                                          style: TextStyle(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ],
                                     ),
                           ),

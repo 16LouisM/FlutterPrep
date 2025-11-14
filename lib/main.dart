@@ -38,13 +38,11 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_prep/services/firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_prep/services/auth_service.dart';
-import 'package:flutter_prep/pages/login_page.dart';
 import 'package:flutter_prep/pages/home_page.dart';
 import 'package:flutter_prep/pages/dashboard_page.dart';
 
@@ -52,9 +50,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     MultiProvider(
@@ -79,9 +75,7 @@ class MyApp extends StatelessWidget {
         /// While Firebase is still checking authentication persistence state.
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(
-            home: Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            ),
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
           );
         }
 
