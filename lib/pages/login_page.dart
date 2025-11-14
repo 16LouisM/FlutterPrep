@@ -242,7 +242,6 @@ class _LoginPageState extends State<LoginPage> {
 
                         const SizedBox(height: 16),
 
-<<<<<<< HEAD
                         // GOOGLE LOGIN
                         SizedBox(
                           width: double.infinity,
@@ -288,28 +287,6 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: const Text("Don't have an account? Create one"),
-=======
-                        // Sign Up Link - Direct navigation
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Don't have an account? ",
-                              style: TextStyle(color: Colors.grey.shade600),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignUpPage(),
-                                  ),
-                                );
-                              },
-                              child: const Text('Sign Up'),
-                            ),
-                          ],
->>>>>>> b29091e8da7be781557b7df176d6bee28f38adef
                         ),
                       ],
                     ),
@@ -325,14 +302,9 @@ class _LoginPageState extends State<LoginPage> {
       bottomNavigationBar: Container(
         height: 115,
         decoration: BoxDecoration(
-<<<<<<< HEAD
           color: Colors.blue.shade50,
           border:
               Border(top: BorderSide(width: 1, color: Colors.grey.shade300)),
-=======
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(8),
->>>>>>> b29091e8da7be781557b7df176d6bee28f38adef
         ),
         child: Column(
           children: [
