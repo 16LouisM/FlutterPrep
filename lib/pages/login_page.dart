@@ -289,11 +289,13 @@ class _LoginPageState extends State<LoginPage> {
                                               50,
                                             ),
                                           ),
-                                          child: const Icon(
-                                            Icons.g_mobiledata,
-                                            size: 20,
-                                            color: Colors.red,
-                                          ),
+                                          child: Image.asset(
+  'assets/images/g-logo.png',
+  width: 20,   // equivalent to Icon size
+  height: 20,
+  fit: BoxFit.contain,
+),
+
                                         ),
                                         const SizedBox(width: 12),
                                         const Text(
