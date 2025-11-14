@@ -290,12 +290,21 @@ class _LoginPageState extends State<LoginPage> {
                                             ),
                                           ),
                                           child: Image.asset(
+<<<<<<< HEAD
                                             'assets/images/g-logo.png',
                                             width:
                                                 20, // equivalent to Icon size
                                             height: 20,
                                             fit: BoxFit.contain,
                                           ),
+=======
+  'assets/images/g-logo.png',
+  width: 20,   // equivalent to Icon size
+  height: 20,
+  fit: BoxFit.contain,
+),
+
+>>>>>>> 8db6afeeac4565c17aee6dc7289aeac3caabe26c
                                         ),
                                         const SizedBox(width: 12),
                                         const Text(
