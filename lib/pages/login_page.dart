@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
-import 'sign_up_page.dart'; // Import for direct navigation
-import 'dashboard_page.dart'; // Import for direct navigation
+import 'sign_up_page.dart';
+import 'dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +16,11 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _isGoogleLoading = false;
 
+  // ---------------------------------------------------------------------------
+  // 🔐 EMAIL + PASSWORD SIGN IN
+  // ---------------------------------------------------------------------------
   Future<void> _signIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -27,9 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
@@ -38,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text.trim(),
       );
 
-      // Direct navigation to Dashboard
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -53,13 +55,85 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     } finally {
-      if (!mounted) return;
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // 🔄 PASSWORD RESET
+  // ---------------------------------------------------------------------------
+  Future<void> _resetPassword() async {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty || !email.contains("@")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Enter your email to reset password."),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Password reset email sent!"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 🔐 GOOGLE SIGN IN (WORKS FOR FLUTTER WEB)
+  // ---------------------------------------------------------------------------
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isGoogleLoading = true);
+
+    try {
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+      // Web popup login
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+      if (userCredential.user != null && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => DashboardPage()),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Google sign-in failed: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isGoogleLoading = false);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // UI
+  // ---------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,16 +149,15 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
+            colors: [Colors.blue.shade50, Colors.green.shade50],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.blue.shade50, Colors.green.shade50],
           ),
         ),
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Card(
                   elevation: 8,
@@ -104,14 +177,14 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.blue.shade800,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
                         Text(
                           'Sign in to your account',
                           style: TextStyle(color: Colors.grey.shade600),
                         ),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 30),
 
-                        // Email Field
+                        // Email
                         TextField(
                           controller: _emailController,
                           decoration: const InputDecoration(
@@ -119,11 +192,10 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: Icon(Icons.email),
                             border: OutlineInputBorder(),
                           ),
-                          keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
 
-                        // Password Field
+                        // Password
                         TextField(
                           controller: _passwordController,
                           obscureText: true,
@@ -133,9 +205,18 @@ class _LoginPageState extends State<LoginPage> {
                             border: OutlineInputBorder(),
                           ),
                         ),
-                        const SizedBox(height: 24),
 
-                        // Login Button
+                        // FORGOT PASSWORD
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: _resetPassword,
+                            child: const Text("Forgot Password?"),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        // LOGIN BUTTON
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -144,45 +225,68 @@ class _LoginPageState extends State<LoginPage> {
                               backgroundColor: Colors.blue.shade600,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
                             ),
-                            child:
-                                _isLoading
-                                    ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                              Colors.white,
-                                            ),
-                                      ),
-                                    )
-                                    : const Text(
-                                      'Login',
-                                      style: TextStyle(fontSize: 16),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.white),
                                     ),
+                                  )
+                                : const Text("Login"),
                           ),
                         ),
 
                         const SizedBox(height: 16),
 
-                        // Sign Up Link - Direct navigation
+                        // GOOGLE LOGIN
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed:
+                                _isGoogleLoading ? null : _signInWithGoogle,
+                            style: OutlinedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                            ),
+                            child: _isGoogleLoading
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor:
+                                          AlwaysStoppedAnimation(Colors.black),
+                                    ),
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.network(
+                                        "https://upload.wikimedia.org/wikipedia/commons/4/4e/Google_2015_logo.svg",
+                                        height: 18,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      const Text("Sign in with Google"),
+                                    ],
+                                  ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // SIGN UP LINK
                         TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignUpPage(),
-                              ),
+                                  builder: (context) => const SignUpPage()),
                             );
                           },
-                          child: const Text(
-                            "Don't have an account? Create one",
-                          ),
+                          child: const Text("Don't have an account? Create one"),
                         ),
                       ],
                     ),
@@ -193,14 +297,14 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      // Footer
+
+      // FOOTER
       bottomNavigationBar: Container(
         height: 60,
         decoration: BoxDecoration(
           color: Colors.blue.shade50,
-          border: Border(
-            top: BorderSide(width: 1, color: Colors.grey.shade300),
-          ),
+          border:
+              Border(top: BorderSide(width: 1, color: Colors.grey.shade300)),
         ),
         child: Center(
           child: Text(
