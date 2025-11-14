@@ -42,20 +42,103 @@
 //   firebase_auth: ^6.1.2 (or latest compatible version)
 // --------------------------------------------------------------
 
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:flutter/foundation.dart';
+
+// class AuthService extends ChangeNotifier {
+//   // Firebase Auth instance
+//   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+//   //  Stream to listen for authentication state changes
+//   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+//   //  Get current user
+//   User? get currentUser => _auth.currentUser;
+
+//   //  SIGN IN (Login existing users)
+//   Future<User?> signInWithEmail(String email, String password) async {
+//     try {
+//       UserCredential result = await _auth.signInWithEmailAndPassword(
+//         email: email,
+//         password: password,
+//       );
+//       return result.user;
+//     } on FirebaseAuthException catch (e) {
+//       throw Exception(_handleFirebaseError(e));
+//     }
+//   }
+
+//   Future<String?> signIn(String email, String password) async {
+//     // Simulate an authentication call; return null on success or an error message on failure.
+//     await Future.delayed(const Duration(seconds: 1));
+//     if (email == 'user@example.com' && password == 'password') {
+//       return null; // success
+//     }
+//     return 'Invalid email or password';
+//   }
+
+//   //  SIGN UP (Register new users)
+//   Future<User?> signUpWithEmail(String email, String password) async {
+//     try {
+//       UserCredential result = await _auth.createUserWithEmailAndPassword(
+//         email: email,
+//         password: password,
+//       );
+//       return result.user;
+//     } on FirebaseAuthException catch (e) {
+//       throw Exception(_handleFirebaseError(e));
+//     }
+//   }
+
+//   //  SIGN OUT
+//   Future<void> signOut() async {
+//     await _auth.signOut();
+//   }
+
+//   //  HANDLE FIREBASE ERRORS FOR BETTER UX
+//   String _handleFirebaseError(FirebaseAuthException e) {
+//     switch (e.code) {
+//       case 'user-not-found':
+//         return 'No user found for that email.';
+//       case 'wrong-password':
+//         return 'Incorrect password.';
+//       case 'invalid-email':
+//         return 'The email address is not valid.';
+//       case 'email-already-in-use':
+//         return 'An account already exists for that email.';
+//       case 'weak-password':
+//         return 'The password is too weak. Please use a stronger one.';
+//       default:
+//         return 'Authentication error: ${e.message}';
+//     }
+//   }
+// }
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 class AuthService extends ChangeNotifier {
-  // Firebase Auth instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  //  Stream to listen for authentication state changes
+  AuthService() {
+    _initializePersistence();
+  }
+
+  /// Ensure persistent login on web
+  Future<void> _initializePersistence() async {
+    try {
+      await _auth.setPersistence(Persistence.LOCAL);
+    } catch (e) {
+      debugPrint("Error setting persistence: $e");
+    }
+  }
+
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  //  Get current user
   User? get currentUser => _auth.currentUser;
 
-  //  SIGN IN (Login existing users)
+  // SIGN IN
   Future<User?> signInWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
@@ -69,15 +152,14 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<String?> signIn(String email, String password) async {
-    // Simulate an authentication call; return null on success or an error message on failure.
     await Future.delayed(const Duration(seconds: 1));
     if (email == 'user@example.com' && password == 'password') {
-      return null; // success
+      return null;
     }
     return 'Invalid email or password';
   }
 
-  //  SIGN UP (Register new users)
+  // SIGN UP
   Future<User?> signUpWithEmail(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -90,12 +172,12 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  //  SIGN OUT
+  // SIGN OUT
   Future<void> signOut() async {
     await _auth.signOut();
   }
 
-  //  HANDLE FIREBASE ERRORS FOR BETTER UX
+  // ERROR HANDLING
   String _handleFirebaseError(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
@@ -107,7 +189,7 @@ class AuthService extends ChangeNotifier {
       case 'email-already-in-use':
         return 'An account already exists for that email.';
       case 'weak-password':
-        return 'The password is too weak. Please use a stronger one.';
+        return 'The password is too weak.';
       default:
         return 'Authentication error: ${e.message}';
     }
